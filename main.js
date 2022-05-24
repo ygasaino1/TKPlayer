@@ -67,7 +67,7 @@ function hub() {
         soundcloud_main();
     } else if (refs['bilibili'].test(link_url.host)) {
         bilibili_main();
-    } else if (refs['zeno'].test(decodeURI(link_url.href))) {
+    } else if (refs['zeno'].test(decodeURI(link_url.host))) {
         zeno_main();
     } else if (refs['video'].test(decodeURI(link_url.href))) {
         video_main();
