@@ -20,4 +20,8 @@ function zeno_main() {
     zeno_call(this_url);
 }
 
-function zeno_call(url) {}
+function zeno_call(url) {
+    console.log(url);
+    iframe.setAttribute('src', url);
+    console.log(iframe);
+}
