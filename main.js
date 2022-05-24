@@ -52,7 +52,7 @@ let refs = {
     'soundcloud': /\w*.?soundcloud\.\w+/i,
     'bilibili': /\.bilibili\./i,
 
-    'video': /\.mp4|\.m3u8/i,
+    'video': /\.mp4|\.m3u8|\.webm|\.ogv/i,
 }
 
 function hub() {
