@@ -11,7 +11,7 @@ function zeno_main() {
     radio_reg = /\/(\w+)\/?$/i;
     if (radio_reg.test(href)) {
         let matches = href.match(radio_reg);
-        channel_id = matches[1] || '';
+        radio_id = matches[1] || '';
         console.log(`zeno@radio_id: ${radio_id}`);
     }
     //---------------------------
