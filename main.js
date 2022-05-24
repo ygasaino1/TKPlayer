@@ -51,6 +51,7 @@ let refs = {
     'vimeo': /.*vimeo\.\w+\//i,
     'soundcloud': /\w*.?soundcloud\.\w+/i,
     'bilibili': /\.bilibili\./i,
+    'zeno': /zeno/i,
 
     'video': /\.mp4|\.m3u8|\.webm|\.ogv/i,
 }
@@ -66,6 +67,8 @@ function hub() {
         soundcloud_main();
     } else if (refs['bilibili'].test(link_url.host)) {
         bilibili_main();
+    } else if (refs['zeno'].test(decodeURI(link_url.href))) {
+        zeno_main();
     } else if (refs['video'].test(decodeURI(link_url.href))) {
         video_main();
     }
