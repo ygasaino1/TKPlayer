@@ -37,8 +37,9 @@ function getHash() {
 }
 window.addEventListener("hashchange", () => {
     getHash();
-    if (hash['key'] == 'c') { //comment
-        //...
+    if (hash['key'] == 'comment') { //comment
+        comment(hash['value']);
+        // history.pushState(null, null, ' ');
     } else if (hash['key'] == 'link') { //time
         main();
     }
