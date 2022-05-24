@@ -8,7 +8,7 @@ function zeno_main() {
     //---------------------------
     let radio_id = '';
     //---------------------------
-    radio_reg = /\/(\w+)$/i;
+    radio_reg = /\/(\w+)\/?$/i;
     if (radio_reg.test(href)) {
         let matches = href.match(radio_reg);
         channel_id = matches[1] || '';
