@@ -1,0 +1,56 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: black;
+}
+
+body {
+    position: relative;
+}
+
+#back-container {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
+    background-color: black;
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+    visibility: hidden;
+}
+
+#icon {
+    font-size: 150px;
+    color: white;
+}
+
+#text {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 25px;
+    color: white;
+}
+
+#vid-container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+video {
+    position: absolute !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+iframe {
+    position: absolute !important;
+    width: 100% !important;
+    height: 100% !important;
+    top: 0px;
+}
