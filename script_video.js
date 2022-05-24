@@ -13,7 +13,7 @@ function video_main() {
     v_container.appendChild(video);
     //---------------------------
 
-    v_container.style.visibility = 'visible';
+    b_container.style.visibility = 'visible';
 
     //---------------------------
     var options = {};

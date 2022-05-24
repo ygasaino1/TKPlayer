@@ -17,7 +17,7 @@ function main() {
             video.remove();
             video = null;
         }
-        v_container.style.visibility = 'hidden';
+        b_container.style.visibility = 'hidden';
         iframe.setAttribute('src', '');
         //---------------------------
         hub();
