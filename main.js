@@ -8,7 +8,7 @@ function main() {
     try {
         link_url = new URL(link);
         [...loc_url.searchParams.keys()].forEach(k => {
-            if (k.toLowerCase() != 'open') { parameters[k] = loc_url.searchParams.get(k); }
+            parameters[k] = loc_url.searchParams.get(k);
         });
         //---------------------------
         //CLEAN-UP: we dont want a video and an iframe at the same time.
@@ -40,14 +40,18 @@ function getHash() {
     }
 }
 window.addEventListener("hashchange", () => {
+    hashchange();
+});
+
+function hashchange() {
     getHash();
     if (hash['key'] == 'comment') { //comment
         comment(hash['value']);
         // history.pushState(null, null, ' ');
-    } else if (hash['key'] in ['link', 'radio']) { //time
+    } else if (['link', 'radio'].includes(hash['key'])) { //time
         main();
     }
-});
+}
 
 let refs = {
     'youtube': /(.*youtube\..*)|(.*youtu\.be.*)/i,
