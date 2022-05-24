@@ -4,7 +4,6 @@ let parameters = {};
 let hash = {};
 
 function main() {
-    if (hash['key'] != 'link') { return; }
     let link = hash['value'];
     try {
         link_url = new URL(link);
@@ -18,9 +17,14 @@ function main() {
             video = null;
         }
         b_container.style.visibility = 'hidden';
+        audio.setAttribute('src', '');
         iframe.setAttribute('src', '');
         //---------------------------
-        hub();
+        if (hash['key'] == 'link') {
+            video_hub();
+        } else if (hash['key'] == 'radio') {
+            radio_hub();
+        }
     } catch {
         console.log('URL Failed');
     }
@@ -40,7 +44,7 @@ window.addEventListener("hashchange", () => {
     if (hash['key'] == 'comment') { //comment
         comment(hash['value']);
         // history.pushState(null, null, ' ');
-    } else if (hash['key'] == 'link') { //time
+    } else if (hash['key'] in ['link', 'radio']) { //time
         main();
     }
 });
@@ -56,7 +60,7 @@ let refs = {
     'video': /\.mp4|\.m3u8|\.webm|\.ogv/i,
 }
 
-function hub() {
+function video_hub() {
     if (refs['youtube'].test(link_url.host)) {
         youtube_main();
     } else if (refs['twitch'].test(link_url.host)) {
@@ -72,6 +76,10 @@ function hub() {
     } else if (refs['video'].test(decodeURI(link_url.href))) {
         video_main();
     }
+}
+
+function radio_hub() {
+    radio_main();
 }
 //...
 

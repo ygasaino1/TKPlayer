@@ -13,6 +13,8 @@ function video_main() {
     v_container.appendChild(video);
     //---------------------------
 
+    icon.textContent = '🗂';
+    text.textContent = 'TKMedia';
     b_container.style.visibility = 'visible';
 
     //---------------------------
