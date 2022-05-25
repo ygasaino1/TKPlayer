@@ -2,10 +2,10 @@ let player = null;
 
 function video_main() {
     console.log('>> inside video_main');
-    console.log(link_url);
+    console.log(url);
     console.log(parameters);
     //---------------------------
-    let href = decodeURI(link_url.href);
+    let href = decodeURI(url.href);
     //---------------------------
     let html = `<video id="vid" preload="auto" class="vjs-default-skin" autoplay><source src=${href} ></video>`;
     video = htmlToElement(html);
@@ -13,9 +13,12 @@ function video_main() {
     v_container.appendChild(video);
     //---------------------------
 
-    icon.textContent = '🗂';
-    text.textContent = 'TKMedia';
-    b_container.style.visibility = 'visible';
+    // icon.textContent = '🗂';
+    // text.textContent = 'TKMedia';
+    // b_container.style.visibility = 'visible';
+
+    log = 'Video Loading...';
+    console_(log);
 
     //---------------------------
     var options = {};
@@ -33,7 +36,7 @@ function video_main() {
         });
 
         //---------------------------
-        let t_ = parseInt(link_url.searchParams.get('t')) || parseInt(link_url.searchParams.get('time')) || 0;
+        let t_ = parseInt(url.searchParams.get('t')) || parseInt(url.searchParams.get('time')) || 0;
         if ('t' in parameters) { t_ += (parseInt(parameters['t']) || 0); }
         this.currentTime(time);
     });

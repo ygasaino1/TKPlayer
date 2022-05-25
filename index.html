@@ -9,26 +9,27 @@
     <link href="-video-js.css" rel="stylesheet">
 
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style_back_container.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="style_comment.css">
+
 
     <title>TKPlayer</title>
 </head>
 
 <body>
-    <!-- <section id="grid">
-        <div id="cont1"></div>
-        <div id="cont2">
-            <canvas></canvas>
-        </div>
-    </section> -->
     <div id="back-container">
-        <div id="icon">
-            🗂
-        </div>
-        <div id="text">
-            TKMedia
+        <iframe id="back-iframe" src="sprinkles\index.html" frameborder="0"></iframe>
+        <div id="console">
+            <div id="console-flex">
+                <div class="console">TKMedia</div>
+                <div class="console">Copyright (C) not(Microsoft Corporation).but still All rights reserved.</div>
+                <div id="console-input">
+                    <!-- <div class="console">State: Radio</div> -->
+                </div>
+                <div class="console">TK 127.0.0.1:lol><img src="shell.gif" alt="" style="height: 1.5vh; padding: 0px; margin: 0px;"></div>
+            </div>
         </div>
     </div>
     <div id="vid-container">
@@ -36,15 +37,15 @@
         <script src="-videojs-http-streaming.js"></script>
         <!-- <video id="vid"></video> -->
     </div>
-    <iframe id="iframe" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <iframe id="video-iframe" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     <audio src="" autoplay></audio>
     <!-- crossorigin="anonymous" -->
 
 
 
     <!-- SCRIPTS -->
-    <script src="script_utility.js"></script>
     <script src="init.js"></script>
+    <script src="script_utility.js"></script>
     <!-- <script src="script_visual.js"></script> -->
     <!-- IFRAME-SERIES -->
     <script src="service_youtube.js"></script>
