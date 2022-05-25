@@ -1,55 +1,48 @@
-let loc_url = new URL(location);
-let link_url = null;
-let parameters = {};
-let hash = {};
-
 function main() {
     let link = hash['value'];
+    //--------------------------- RE-FILL DATA
+    [...loc_url.searchParams.keys()].forEach(k => {
+        parameters[k] = loc_url.searchParams.get(k);
+    });
+    //--------------------------- RE-STYLE
+    b_container.style.visibility = 'hidden';
+    if (hash['key'] == 'link' && audio.getAttribute('src') == '') {
+        grid.style.gridTemplateColumns = '15fr 0fr';
+    } else if (hash['key'] == 'radio') { grid.style.gridTemplateColumns = '15fr 1fr'; };
+    //--------------------------- CLEANUP
+    cleanup();
+    //---------------------------
     try {
         link_url = new URL(link);
-        [...loc_url.searchParams.keys()].forEach(k => {
-            parameters[k] = loc_url.searchParams.get(k);
-        });
-        //---------------------------
-        //CLEAN-UP: we dont want a video and an iframe at the same time.
-        if (video != null) {
-            video.remove();
-            video = null;
-        }
-        b_container.style.visibility = 'hidden';
-        audio.setAttribute('src', '');
-        iframe.setAttribute('src', '');
-        //---------------------------
-        if (hash['key'] == 'link') {
-            video_hub();
-        } else if (hash['key'] == 'radio') {
-            radio_hub();
-        }
+        pre_hub();
     } catch {
         console.log('URL Failed');
     }
 }
 
-function getHash() {
-    let sep = '>';
-    let h = decodeURI(location.hash).substring(1);
-    let indexOf = h.indexOf(sep);
-    hash = {
-        key: indexOf != -1 ? h.slice(0, h.indexOf(sep)) : h,
-        value: indexOf != -1 ? h.slice(h.indexOf(sep) + sep.length) : ''
+function cleanup() {
+    if (hash['key'] == 'link') {
+        { //1.1. loading a video so: cleaning videos first
+            if (video != null) {
+                video.remove();
+                video = null;
+            }
+            iframe.setAttribute('src', '');
+        }
+        //1.2. ...
+        if (!('mute' in parameters)) {
+            audio.setAttribute('src', '');
+        }
+    } else if (hash['key'] == 'radio') {
+        audio.setAttribute('src', '');
     }
 }
-window.addEventListener("hashchange", () => {
-    hashchange();
-});
 
-function hashchange() {
-    getHash();
-    if (hash['key'] == 'comment') { //comment
-        comment(hash['value']);
-        // history.pushState(null, null, ' ');
-    } else if (['link', 'radio'].includes(hash['key'])) { //time
-        main();
+function pre_hub() {
+    if (hash['key'] == 'link') {
+        video_hub();
+    } else if (hash['key'] == 'radio') {
+        radio_hub();
     }
 }
 
@@ -85,7 +78,21 @@ function video_hub() {
 function radio_hub() {
     radio_main();
 }
-//...
+
+window.addEventListener("hashchange", () => {
+    hashchange();
+});
+
+function hashchange() {
+    getHash();
+    if (hash['key'] == 'comment') { //comment
+        comment(hash['value']);
+        // history.pushState(null, null, ' ');
+    } else if (['link', 'radio'].includes(hash['key'])) { //time
+        main();
+    }
+}
 
 getHash();
 main();
+visual();
