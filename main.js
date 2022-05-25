@@ -6,9 +6,9 @@ function main() {
     });
     //--------------------------- RE-STYLE
     b_container.style.visibility = 'hidden';
-    if (hash['key'] == 'link' && audio.getAttribute('src') == '') {
-        grid.style.gridTemplateColumns = '15fr 0fr';
-    } else if (hash['key'] == 'radio') { grid.style.gridTemplateColumns = '15fr 1fr'; };
+    // if (hash['key'] == 'link' && audio.getAttribute('src') == '') {
+    //     grid.style.gridTemplateColumns = '15fr 0fr';
+    // } else if (hash['key'] == 'radio') { grid.style.gridTemplateColumns = '15fr 1fr'; };
     //--------------------------- CLEANUP
     cleanup();
     //---------------------------
@@ -95,4 +95,4 @@ function hashchange() {
 
 getHash();
 main();
-visual();
+// visual();
