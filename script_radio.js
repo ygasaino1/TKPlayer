@@ -1,9 +1,9 @@
 function radio_main() {
     console.log('>> inside audio_main');
-    console.log(url);
+    console.log(link_url);
     console.log(parameters);
     //---------------------------
-    let href = decodeURI(url.href);
+    let href = decodeURI(link_url.href);
 
     // icon.textContent = '🖲';
     // text.textContent = 'TKRadio';

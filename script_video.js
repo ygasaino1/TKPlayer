@@ -2,10 +2,10 @@ let player = null;
 
 function video_main() {
     console.log('>> inside video_main');
-    console.log(url);
+    console.log(link_url);
     console.log(parameters);
     //---------------------------
-    let href = decodeURI(url.href);
+    let href = decodeURI(link_url.href);
     //---------------------------
     let html = `<video id="vid" preload="auto" class="vjs-default-skin" autoplay><source src=${href} ></video>`;
     video = htmlToElement(html);
