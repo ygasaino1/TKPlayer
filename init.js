@@ -1,5 +1,6 @@
-let grid = document.querySelector('#grid');
-let vis_div = document.querySelector('#cont2');
+// let grid = document.querySelector('#grid');
+// let vis_div = document.querySelector('#cont2');
+// let canvas = document.querySelector('canvas');
 
 let iframe = document.querySelector('iframe');
 let v_container = document.querySelector('#vid-container');
@@ -8,8 +9,6 @@ let b_container = document.querySelector('#back-container');
 let icon = b_container.querySelector('#icon');
 let text = b_container.querySelector('#text');
 let audio = document.querySelector('audio');
-
-let canvas = document.querySelector('canvas');
 
 let loc_url = new URL(location);
 let link_url = null;
