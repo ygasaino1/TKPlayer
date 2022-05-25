@@ -17,6 +17,7 @@ function main() {
         pre_hub();
     } catch {
         console.log('URL Failed');
+        console_('...URL Failed');
     }
 }
 
