@@ -1,24 +1,39 @@
+let instance = 0;
+loc_url = new URL(location);
+
 function main() {
+    //--------------------------- LOCATION TEMPLATE
+    //location.com/#link.com?abc#hash#param1&param2
+    console.log(hash['value']);
+    let matches = hash['value'].match(/(.*)#([^#]*)$|.*/i);
+    hash['value'] = matches[1] || matches[0];
+    let temp_url = new URL(`http://a?${matches[2]||''}`);
     let link = hash['value'];
     //--------------------------- RE-FILL DATA
-    [...loc_url.searchParams.keys()].forEach(k => {
-        parameters[k] = loc_url.searchParams.get(k);
+    [...temp_url.searchParams.keys()].forEach(k => {
+        parameters[k] = temp_url.searchParams.get(k);
     });
-    //--------------------------- RE-STYLE
-    // b_container.style.visibility = 'hidden';
-    // if (hash['key'] == 'link' && audio.getAttribute('src') == '') {
-    //     grid.style.gridTemplateColumns = '15fr 0fr';
-    // } else if (hash['key'] == 'radio') { grid.style.gridTemplateColumns = '15fr 1fr'; };
+    //--------------------------- LOG
+    if (hash['key'] == 'link') {
+        log = `...REQUEST/Video`;
+    } else if (hash['key'] == 'radio') {
+        log = `...REQUEST/Radio`;
+    }
+    console_(log);
     //--------------------------- CLEANUP
     cleanup();
     //---------------------------
     try {
         link_url = new URL(link);
+        log = `URL [${link_url.protocol}//][${link_url.host}][${link_url.pathname}][${link_url.search}][${link_url.hash}] -${JSON.stringify(parameters)}`;
+        console_(log);
         pre_hub();
     } catch (e) {
         console.log('URL Failed');
-        console_('...URL Failed');
+
+        if (link_url == null) { console_(`URL ${hash['value']}`) };
         console_(e);
+        console_('...URL Failed');
     }
 }
 
@@ -41,13 +56,13 @@ function cleanup() {
 }
 
 function pre_hub() {
+    if (instance > 0 && 'debug' in parameters) { window.location.reload(); }
     if (hash['key'] == 'link') {
-        log = `...REQUEST/Video<br>URL [${link_url?link_url.protocol:'-'}//][${link_url?link_url.host:'-'}][${link_url?link_url.pathname:'-'}][${link_url?link_url.search:'-'}][${link_url?link_url.hash:'-'}]`;
-        console_(log);
+        instance += 1;
+        b_iframe.setAttribute('src', '');
         video_hub();
     } else if (hash['key'] == 'radio') {
-        log = `...REQUEST/Radio<br>URL [${link_url?link_url.protocol:'-'}//][${link_url?link_url.host:'-'}][${link_url?link_url.pathname:'-'}][${link_url?link_url.search:'-'}][${link_url?link_url.hash:'-'}]`;
-        console_(log);
+        b_iframe.setAttribute('src', 'flow\\index.html');
         radio_hub();
     }
 }

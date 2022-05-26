@@ -6,11 +6,12 @@ let iframe = document.querySelector('#video-iframe');
 let v_container = document.querySelector('#vid-container');
 let video = null;
 let b_container = document.querySelector('#back-container');
+let b_iframe = document.querySelector('#back-iframe');
 let icon = b_container.querySelector('#icon');
 let text = b_container.querySelector('#text');
 let audio = document.querySelector('audio');
 
-let loc_url = new URL(location);
+let loc_url;
 let link_url = null;
 let parameters = {};
 let hash = {};
