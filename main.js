@@ -15,9 +15,10 @@ function main() {
     try {
         link_url = new URL(link);
         pre_hub();
-    } catch {
+    } catch (e) {
         console.log('URL Failed');
         console_('...URL Failed');
+        console_(e);
     }
 }
 
