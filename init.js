@@ -7,8 +7,9 @@ let v_container = document.querySelector('#vid-container');
 let video = null;
 let b_container = document.querySelector('#back-container');
 let b_iframe = document.querySelector('#back-iframe');
-let icon = b_container.querySelector('#icon');
-let text = b_container.querySelector('#text');
+let console_div = document.querySelector('#console');
+let console_div_inner = document.querySelector('#console-flex');
+
 let audio = document.querySelector('audio');
 
 let loc_url;

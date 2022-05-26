@@ -1,4 +1,6 @@
 let instance = 0;
+let debug_zIndex = 1;
+let debug_opacity = 0.8;
 loc_url = new URL(location);
 
 function main() {
@@ -10,6 +12,7 @@ function main() {
     let temp_url = new URL(`http://a?${matches[2]||''}`);
     let link = hash['value'];
     //--------------------------- RE-FILL DATA
+    parameters = {};
     [...temp_url.searchParams.keys()].forEach(k => {
         parameters[k] = temp_url.searchParams.get(k);
     });
@@ -19,11 +22,14 @@ function main() {
     } else if (hash['key'] == 'radio') {
         log = `...REQUEST/Radio`;
     }
+    if ('who' in parameters) { log += `@${parameters['who']}`; }
     console_(log);
     //--------------------------- CLEANUP
+    restyle();
     cleanup();
     //---------------------------
     try {
+        link_url = null;
         link_url = new URL(link);
         log = `URL [${link_url.protocol}//][${link_url.host}][${link_url.pathname}][${link_url.search}][${link_url.hash}] -${JSON.stringify(parameters)}`;
         console_(log);
@@ -34,6 +40,15 @@ function main() {
         if (link_url == null) { console_(`URL ${hash['value']}`) };
         console_(e);
         console_('...URL Failed');
+    }
+}
+
+function restyle() {
+    if ('debug' in parameters) { console_div.style.zIndex = debug_zIndex; } else { console_div.style.zIndex = 0; }
+    if (hash['key'] == 'link') {
+        console_div_inner.style.backgroundColor = `rgb(0,0,0,${debug_opacity})`;
+    } else if (hash['key'] == 'radio') {
+        { console_div_inner.style.backgroundColor = `rgb(0,0,0,0.0)`; }
     }
 }
 
@@ -56,7 +71,7 @@ function cleanup() {
 }
 
 function pre_hub() {
-    if (instance > 0 && 'debug' in parameters) { window.location.reload(); }
+    if (instance > 0 && !('noreload' in parameters)) { window.location.reload(); }
     if (hash['key'] == 'link') {
         instance += 1;
         b_iframe.setAttribute('src', '');
@@ -112,6 +127,12 @@ function hashchange() {
     if (hash['key'] == 'comment') { //comment
         comment(hash['value']);
         // history.pushState(null, null, ' ');
+    } else if (hash['key'] == 'debug') {
+        if (console_div.style.zIndex == 0) {
+            console_div.style.zIndex = debug_zIndex;
+        } else if (console_div.style.zIndex == debug_zIndex) {
+            console_div.style.zIndex = 0;
+        }
     } else if (['link', 'radio'].includes(hash['key'])) { //time
         main();
     }
