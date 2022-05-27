@@ -1,13 +1,13 @@
-function raw_main() {
-    console.log('>> inside audio_main');
+function script_direct() {
+    console.log('>> inside raw_main');
     console.log(link_url);
     console.log(parameters);
     //---------------------------
     let href = decodeURI(link_url.href);
-    raw_call(href);
+    script_call(href);
 }
 
-function raw_call(url) {
+function script_call(url) {
     console.log(url);
     iframe.setAttribute('src', url);
     console.log(iframe);

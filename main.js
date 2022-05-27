@@ -110,7 +110,7 @@ function video_hub() {
     } else if (refs['video'].test(decodeURI(link_url.href))) {
         video_main();
     } else {
-        raw_main();
+        script_direct();
     }
 }
 
