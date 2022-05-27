@@ -9,6 +9,8 @@ let b_container = document.querySelector('#back-container');
 let b_iframe = document.querySelector('#back-iframe');
 let console_div = document.querySelector('#console');
 let console_div_inner = document.querySelector('#console-flex');
+let debug_cl_default = '#ffd3dc';
+let debug_cl_warning = '#00b1ff';
 
 let audio = document.querySelector('audio');
 
@@ -31,7 +33,7 @@ function getHash() {
 }
 
 // log = `REQUEST/Video<br>URL [${url.protocol || ''}//][${url.host || ''}][${url.pathname || ''}][${url.search || ''}][${url.hash || ''}]`;
-function console_(log) {
-    let this_ = htmlToElement(`<div class="console">${log}</div>`);
+function console_(log, color = debug_cl_default) {
+    let this_ = htmlToElement(`<div class="console" style="color: ${color}">${log}</div>`);
     console_input.appendChild(this_);
 }

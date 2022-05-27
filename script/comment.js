@@ -1,4 +1,4 @@
-let comment = function(msg) {
+let cmd_comment = function(msg) {
     let iter = 1;
     if (msg.toLowerCase().startsWith("waa", 5)) {
         iter = 3;
