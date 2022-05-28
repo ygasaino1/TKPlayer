@@ -26,6 +26,7 @@ function cmd_open() {
     //location.com/#link.com?abc#hash#param1&param2
     let matches = hash['value'].match(/(.*)#([^#]*)$|.*/i);
     hash['value'] = matches[1] || matches[0];
+    //---------------------------
     let temp_url = new URL(`http://a?${matches[2]||''}`);
     let link = hash['value'];
     //--------------------------- RE-FILL DATA
@@ -132,9 +133,13 @@ function hub_novideo() {
     }
 }
 
-function cmd_debug() {
+let debug_timeoutID;
+
+function cmd_debug(v, c = debug_cl_warning) {
     console_div.style.zIndex = debug_zIndex;
-    if (hash['value'] != '') console_(decodeURI(hash['value']).replace('\\n', '<br>'), debug_cl_warning);
+    clearTimeout(debug_timeoutID);
+    debug_timeoutID = setTimeout(() => { console_div.style.zIndex = 0; }, 7000);
+    if (v != '') console_(decodeURI(v).replaceAll('\\n', '<br>'), c);
 }
 
 window.addEventListener("hashchange", () => {
@@ -147,10 +152,10 @@ function hashchange() {
         cmd_open();
     } else if (hash['key'] == 'comment') { //comment
         cmd_comment(hash['value']);
-        // history.pushState(null, null, ' ');
     } else if (hash['key'] == 'debug') {
-        cmd_debug();
+        cmd_debug(hash['value']);
     }
+    history.pushState(null, null, ' ');
 }
 
 // getHash();
