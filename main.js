@@ -57,7 +57,7 @@ function cmd_open() {
         prehub();
     } catch (e) {
         console.log('URL Failed');
-        if (link_url == null) { console_(`URL ${hash['value']}`, debug_cl_warning) };
+        if (link_url == null) { console_(`URL ${hash['value']} -${JSON.stringify(parameters)}`, debug_cl_warning) };
         console_(e, debug_cl_warning);
         console_('...URL Failed', debug_cl_warning);
         // console_div.style.zIndex = debug_zIndex;
