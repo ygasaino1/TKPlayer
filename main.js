@@ -144,7 +144,7 @@ function hub_novideo() {
 let debug_timeoutID;
 
 function cmd_debug(msg, color = debug_cl_warning) {
-    if (msg != '') { console_(decodeURI(msg).replaceAll('\\n', '<br>'), color) };
+    if (msg != '') { console_(msg.replaceAll('\\n', '<br>'), color) };
     console_div.style.zIndex = debug_zIndex;
     clearTimeout(debug_timeoutID);
     debug_timeoutID = setTimeout(() => { console_div.style.zIndex = 0; }, 7000);
@@ -152,7 +152,7 @@ function cmd_debug(msg, color = debug_cl_warning) {
 
 // log = `REQUEST/Video<br>URL [${url.protocol || ''}//][${url.host || ''}][${url.pathname || ''}][${url.search || ''}][${url.hash || ''}]`;
 function console_(log, color = debug_cl_default) {
-    log = decodeURI(log);
+    // log = decodeURI(log);
     let this_ = htmlToElement(`<div class="console" style="color: ${color}">${log}</div>`);
     console_input.appendChild(this_);
 }
