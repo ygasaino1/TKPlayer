@@ -153,11 +153,11 @@ function cmd_debug(msg, color = debug_cl_warning) {
 // log = `REQUEST/Video<br>URL [${url.protocol || ''}//][${url.host || ''}][${url.pathname || ''}][${url.search || ''}][${url.hash || ''}]`;
 function console_(log, color = debug_cl_default) {
     if (log != '') {
-        try {
-            log = decodeURI(log);
-            log = msg.replaceAll('%20', ' ');
-            log = msg.replaceAll('\\n', '<br>');
-        } catch {}
+        // try {
+        //     log = decodeURI(log);
+        // } catch { }
+        log = msg.replaceAll('%20', ' ');
+        log = msg.replaceAll('\\n', '<br>');
     };
     let this_ = htmlToElement(`<div class="console" style="color: ${color}">${log}</div>`);
     console_input.appendChild(this_);
