@@ -151,7 +151,7 @@ function cmd_debug(msg, color = debug_cl_warning) {
 }
 
 // log = `REQUEST/Video<br>URL [${url.protocol || ''}//][${url.host || ''}][${url.pathname || ''}][${url.search || ''}][${url.hash || ''}]`;
-function console_(log, color = debug_cl_default) {
+function console_(log_, color = debug_cl_default) {
     // let str_ = log;
     // if (str_ != '') {
     //     // try {
@@ -160,7 +160,7 @@ function console_(log, color = debug_cl_default) {
     //     str_ = str_.replaceAll('%20', ' ');
     //     str_ = str_.replaceAll('\\n', '<br>');
     // };
-    let this_ = htmlToElement(`<div class="console" style="color: ${color}">${log}</div>`);
+    let this_ = htmlToElement(`<div class="console" style="color: ${color}">${log_}</div>`);
     console_input.appendChild(this_);
 }
 
