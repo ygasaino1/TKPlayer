@@ -113,7 +113,9 @@ function restyle(v) {
 
 function hub_video() {
     let video_custom_param_ = Object.keys(video_service_custom).filter(p => p in parameters)[0];
-    if (video_custom_param_ != undefined) { // SPECIAL
+    if (hash['value'] == 'homepage') {
+        iframe.setAttribute('src', decodeURI(link_url.href));
+    } else if (video_custom_param_ != undefined) { // SPECIAL
         video_service_custom[video_custom_param_]();
     } else if (video_service['youtube'].test(link_url.host)) {
         youtube_main();
