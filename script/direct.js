@@ -1,5 +1,5 @@
 function script_direct() {
-    console.log('>> inside raw_main');
+    console.log('>> inside direct');
     console.log(link_url);
     console.log(parameters);
     //---------------------------
@@ -9,6 +9,5 @@ function script_direct() {
 
 function script_call(url) {
     console.log(url);
-    iframe.setAttribute('src', url);
-    console.log(iframe);
+    window.location.href = url;
 }
