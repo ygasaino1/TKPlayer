@@ -55,7 +55,6 @@ function cmd_open() {
         prehub();
     } catch (e) {
         console.log('URL Failed');
-        cmd_debug("woooo\\nwoooooooooooo.....");
         if (link_url == null) { console_(`URL ${hash['value']}`, debug_cl_warning) };
         console_(e, debug_cl_warning);
         console_('...URL Failed', debug_cl_warning);
@@ -153,6 +152,7 @@ function cmd_debug(msg, color = debug_cl_warning) {
 
 // log = `REQUEST/Video<br>URL [${url.protocol || ''}//][${url.host || ''}][${url.pathname || ''}][${url.search || ''}][${url.hash || ''}]`;
 function console_(log, color = debug_cl_default) {
+    log = decodeURI(log).replaceAll('\\n', '<br>')
     let this_ = htmlToElement(`<div class="console" style="color: ${color}">${log}</div>`);
     console_input.appendChild(this_);
 }
