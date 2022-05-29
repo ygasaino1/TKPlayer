@@ -153,9 +153,9 @@ function cmd_debug(msg, color = debug_cl_warning) {
 // log = `REQUEST/Video<br>URL [${url.protocol || ''}//][${url.host || ''}][${url.pathname || ''}][${url.search || ''}][${url.hash || ''}]`;
 function console_(log, color = debug_cl_default) {
     if (log != '') {
-        try {
-            log = decodeURI(log);
-        } catch {}
+        // try {
+        //     log = decodeURI(log);
+        // } catch {}
         log = log.replaceAll('%20', ' ');
         log = log.replaceAll('\\n', '<br>');
     };
