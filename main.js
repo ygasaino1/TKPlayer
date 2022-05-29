@@ -55,8 +55,7 @@ function cmd_open() {
         prehub();
     } catch (e) {
         console.log('URL Failed');
-        console_("hm?")
-        if (link_url == null) { cmd_debug(`URL ${hash['value']}`), debug_cl_warning };
+        if (link_url == null) { cmd_debug(`URL ${hash['value']}`, debug_cl_warning) };
         cmd_debug(e, debug_cl_warning);
         cmd_debug('...URL Failed', debug_cl_warning);
     }
