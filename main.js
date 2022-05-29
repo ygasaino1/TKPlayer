@@ -144,7 +144,11 @@ function hub_novideo() {
 let debug_timeoutID;
 
 function cmd_debug(msg, color = debug_cl_warning) {
-    if (msg != '') { console_(msg.replaceAll('\\n', '<br>'), color) };
+    if (msg != '') {
+        msg = msg.replaceAll('%20', ' ');
+        msg = msg.replaceAll('\\n', '<br>');
+        console_(msg, color)
+    };
     console_div.style.zIndex = debug_zIndex;
     clearTimeout(debug_timeoutID);
     debug_timeoutID = setTimeout(() => { console_div.style.zIndex = 0; }, 7000);
