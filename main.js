@@ -152,7 +152,7 @@ function cmd_debug(msg, color = debug_cl_warning) {
 
 // log = `REQUEST/Video<br>URL [${url.protocol || ''}//][${url.host || ''}][${url.pathname || ''}][${url.search || ''}][${url.hash || ''}]`;
 function console_(log, color = debug_cl_default) {
-    log = decodeURI(log).replaceAll('\\n', '<br>')
+    log = decodeURI(log).replaceAll('\\n', '<br>');
     let this_ = htmlToElement(`<div class="console" style="color: ${color}">${log}</div>`);
     console_input.appendChild(this_);
 }
