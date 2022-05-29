@@ -1,4 +1,4 @@
-let homepage = "";
+let homepage = "https://prrr-001.glitch.me/";
 
 let instance = 0;
 let debug_zIndex = 1;
@@ -44,7 +44,8 @@ function cmd_open() {
     try {
         link_url = null;
         if (link == 'homepage') {
-            link_url = new URL(homepage);
+            link = homepage;
+            link_url = new URL(link);
             console_(`URL ${hash['value']}`);
         } else {
             link_url = new URL(link);
