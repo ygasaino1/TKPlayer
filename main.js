@@ -152,13 +152,14 @@ function cmd_debug(msg, color = debug_cl_warning) {
 
 // log = `REQUEST/Video<br>URL [${url.protocol || ''}//][${url.host || ''}][${url.pathname || ''}][${url.search || ''}][${url.hash || ''}]`;
 function console_(log, color = debug_cl_default) {
-    if (log != '') {
-        // try {
-        //     log = decodeURI(log);
-        // } catch {}
-        log = log.replaceAll('%20', ' ');
-        log = log.replaceAll('\\n', '<br>');
-    };
+    // let str_ = log;
+    // if (str_ != '') {
+    //     // try {
+    //     //     log = decodeURI(log);
+    //     // } catch {}
+    //     str_ = str_.replaceAll('%20', ' ');
+    //     str_ = str_.replaceAll('\\n', '<br>');
+    // };
     let this_ = htmlToElement(`<div class="console" style="color: ${color}">${log}</div>`);
     console_input.appendChild(this_);
 }
