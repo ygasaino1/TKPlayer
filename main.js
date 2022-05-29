@@ -47,12 +47,13 @@ function cmd_open() {
             link = homepage;
             link_url = new URL(link);
             console_(`URL ${hash['value']}`);
+            prehub();
         } else {
             link_url = new URL(link);
             log = `URL [${link_url.protocol}//][${link_url.host}][${link_url.pathname}][${link_url.search}][${link_url.hash}] -${JSON.stringify(parameters)}`;
             console_(log);
+            prehub();
         }
-        prehub();
     } catch (e) {
         console.log('URL Failed');
         if (link_url == null) { cmd_debug(`URL ${hash['value']}`), debug_cl_warning };
