@@ -1,3 +1,4 @@
+//&enablejsapi=1
 function YouTubeGetID(v) {
     v = v.split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
     return (v[2] !== undefined) ? v[2].split(/[^0-9a-z_\-]/i)[0] : v[0];
@@ -20,9 +21,9 @@ function youtube_main() {
             if (link_url.searchParams.has('list')) { list_id = link_url.searchParams.get('list') }
             //---------------------------
             if ('loop' in parameters) { // loop
-                this_url = `https://www.youtube.com/embed/videoseries?list=${list_id}&enablejsapi=1&controls=0&loop=1&autoplay=1`;
+                this_url = `https://www.youtube.com/embed/videoseries?list=${list_id}&controls=0&loop=1&autoplay=1`;
             } else {
-                this_url = `https://www.youtube.com/embed/videoseries?list=${list_id}&enablejsapi=1&controls=0&autoplay=1`;
+                this_url = `https://www.youtube.com/embed/videoseries?list=${list_id}&controls=0&autoplay=1`;
             }
         }
     }
@@ -35,9 +36,9 @@ function youtube_main() {
         if ('t' in parameters) { t_ += (parseInt(parameters['t']) || 0); }
         //---------------------------
         if ('loop' in parameters) { // loop
-            this_url = `https://www.youtube.com/embed/${video_id}?playlist=${video_id}&enablejsapi=1&controls=0&loop=1&autoplay=1&start=${t_}`;
+            this_url = `https://www.youtube.com/embed/${video_id}?playlist=${video_id}&controls=0&loop=1&autoplay=1&start=${t_}`;
         } else { // once
-            this_url = `https://www.youtube.com/embed/${video_id}?enablejsapi=1&controls=0&autoplay=1&start=${t_}`;
+            this_url = `https://www.youtube.com/embed/${video_id}?controls=0&autoplay=1&start=${t_}`;
         }
     }
     if ('mute' in parameters) {
