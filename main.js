@@ -48,7 +48,7 @@ function cmd_open() {
         if (link == 'homepage') {
             link = homepage;
             link_url = new URL(link);
-            console_(`URL ${hash['value']}`);
+            console_(`URL homepage`);
         } else {
             link_url = new URL(link);
             log = `URL [${link_url.protocol}//][${link_url.host}][${link_url.pathname}][${link_url.search}][${link_url.hash}] -${JSON.stringify(parameters)}`;
