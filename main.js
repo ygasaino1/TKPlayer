@@ -145,10 +145,10 @@ function hub_novideo() {
 let debug_timeoutID;
 
 function cmd_debug(msg, color = debug_cl_warning) {
+    if (msg != '') { console_(decodeURI(msg).replaceAll('\\n', '<br>'), color) };
     console_div.style.zIndex = debug_zIndex;
     clearTimeout(debug_timeoutID);
     debug_timeoutID = setTimeout(() => { console_div.style.zIndex = 0; }, 7000);
-    if (msg != '') { console_(decodeURI(msg).replaceAll('\\n', '<br>'), color) };
 }
 
 // log = `REQUEST/Video<br>URL [${url.protocol || ''}//][${url.host || ''}][${url.pathname || ''}][${url.search || ''}][${url.hash || ''}]`;
