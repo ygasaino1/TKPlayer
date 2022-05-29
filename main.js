@@ -1,3 +1,5 @@
+let homepage = "";
+
 let instance = 0;
 let debug_zIndex = 1;
 let debug_opacity = 0.8;
@@ -27,7 +29,7 @@ function cmd_open() {
     let matches = hash['value'].match(/(.*)#([^#]*)$|.*/i);
     hash['value'] = matches[1] || matches[0];
     //---------------------------
-    let temp_url = new URL(`http://a?${matches[2]||''}`);
+    let temp_url = new URL(`http://a?${matches[2] || ''}`);
     let link = hash['value'];
     //--------------------------- RE-FILL DATA
     parameters = {};
@@ -41,9 +43,14 @@ function cmd_open() {
     //---------------------------
     try {
         link_url = null;
-        link_url = new URL(link);
-        log = `URL [${link_url.protocol}//][${link_url.host}][${link_url.pathname}][${link_url.search}][${link_url.hash}] -${JSON.stringify(parameters)}`;
-        console_(log);
+        if (link == 'homepage') {
+            link_url = new URL(homepage);
+            console_(`URL ${hash['value']}`);
+        } else {
+            link_url = new URL(link);
+            log = `URL [${link_url.protocol}//][${link_url.host}][${link_url.pathname}][${link_url.search}][${link_url.hash}] -${JSON.stringify(parameters)}`;
+            console_(log);
+        }
         prehub();
     } catch (e) {
         console.log('URL Failed');
