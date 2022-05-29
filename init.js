@@ -31,9 +31,3 @@ function getHash() {
         value: indexOf != -1 ? h.slice(h.indexOf(sep) + sep.length) : ''
     }
 }
-
-// log = `REQUEST/Video<br>URL [${url.protocol || ''}//][${url.host || ''}][${url.pathname || ''}][${url.search || ''}][${url.hash || ''}]`;
-function console_(log, color = debug_cl_default) {
-    let this_ = htmlToElement(`<div class="console" style="color: ${color}">${log}</div>`);
-    console_input.appendChild(this_);
-}
