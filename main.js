@@ -57,9 +57,9 @@ function cmd_open() {
         prehub();
     } catch (e) {
         console.log('URL Failed');
-        if (link_url == null) { cmd_debug(`URL ${hash['value']}`, debug_cl_warning) };
-        cmd_debug(e, debug_cl_warning);
-        cmd_debug('...URL Failed', debug_cl_warning);
+        if (link_url == null) { console_(`URL ${hash['value']}`, debug_cl_warning) };
+        console_(e, debug_cl_warning);
+        console_('...URL Failed', debug_cl_warning);
         // console_div.style.zIndex = debug_zIndex;
         // clearTimeout(timeoutID_0);
         // timeoutID_0 = setTimeout(() => { console_div.style.zIndex = 0; }, 7000);
