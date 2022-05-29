@@ -145,7 +145,10 @@ let debug_timeoutID;
 
 function cmd_debug(msg, color = debug_cl_warning) {
     if (msg != '') {
-        msg = msg.replaceAll('%20', ' ');
+        // msg = msg.replaceAll('%20', ' ');
+        try {
+            msg = decodeURI(msg);
+        } catch {}
         msg = msg.replaceAll('\\n', '<br>');
         console_(msg, color)
     };
