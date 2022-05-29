@@ -5,6 +5,8 @@ let debug_zIndex = 1;
 let debug_opacity = 0.8;
 loc_url = new URL(location);
 
+let timeoutID_0;
+
 let video_service_custom = {
     // 'param1': func1,
 };
@@ -58,6 +60,9 @@ function cmd_open() {
         if (link_url == null) { cmd_debug(`URL ${hash['value']}`, debug_cl_warning) };
         cmd_debug(e, debug_cl_warning);
         cmd_debug('...URL Failed', debug_cl_warning);
+        console_div.style.zIndex = debug_zIndex;
+        clearTimeout(timeoutID_0);
+        timeoutID_0 = setTimeout(() => { console_div.style.zIndex = 0; }, 7000);
     }
 }
 
@@ -145,23 +150,15 @@ function hub_novideo() {
 
 let debug_timeoutID;
 
-function cmd_debug(msg, color = debug_cl_warning) {
-    if (msg != '') { console_(msg, color) };
-    console_div.style.zIndex = debug_zIndex;
-    clearTimeout(debug_timeoutID);
-    debug_timeoutID = setTimeout(() => { console_div.style.zIndex = 0; }, 7000);
-}
+// function cmd_debug(msg, color = debug_cl_warning) {
+//     if (msg != '') { console_(msg, color) };
+//     console_div.style.zIndex = debug_zIndex;
+//     clearTimeout(debug_timeoutID);
+//     debug_timeoutID = setTimeout(() => { console_div.style.zIndex = 0; }, 7000);
+// }
 
 // log = `REQUEST/Video<br>URL [${url.protocol || ''}//][${url.host || ''}][${url.pathname || ''}][${url.search || ''}][${url.hash || ''}]`;
 function console_(log_, color = debug_cl_default) {
-    // let str_ = log;
-    // if (str_ != '') {
-    //     // try {
-    //     //     log = decodeURI(log);
-    //     // } catch {}
-    //     str_ = str_.replaceAll('%20', ' ');
-    //     str_ = str_.replaceAll('\\n', '<br>');
-    // };
     let this_ = htmlToElement(`<div class="console" style="color: ${color}">${log_}</div>`);
     console_input.appendChild(this_);
 }
@@ -176,9 +173,10 @@ function hashchange() {
         cmd_open();
     } else if (hash['key'] == 'comment') { //comment
         cmd_comment(hash['value']);
-    } else if (hash['key'] == 'debug') {
-        cmd_debug(hash['value']);
     }
+    // } else if (hash['key'] == 'debug') {
+    //     cmd_debug(hash['value']);
+    // }
     history.pushState(null, null, ' ');
 }
 
