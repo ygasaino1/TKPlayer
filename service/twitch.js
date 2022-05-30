@@ -57,6 +57,13 @@ function twitch_main() {
 function twitch_call(url) {
     // use the html elements and ...
     console.log(url);
+    let title = "TKMedia";
+    try {
+        let body_ = await (await fetch('https://web.dev/cross-origin-resource-sharing/')).text()
+        let body_dom_ = new DOMParser().parseFromString(a, "text/html");
+        title = body_dom_.title;
+        document.title = title;
+    } catch {}
     iframe.setAttribute('src', url);
     console.log(iframe);
 }
