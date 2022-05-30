@@ -28,10 +28,13 @@ function youtube_main() {
                 this_url = `https://www.youtube.com/embed/videoseries?list=${list_id}&controls=0&autoplay=1`;
             }
             try {
-                obj = await (await fetch(`https://www.googleapis.com/youtube/v3/playlists?id=${list_id}&key=${apiKey}&fields=items(snippet(title))&part=snippet`)).json()
-                document.title = obj['items'][0]['snippet']['title'];
+                fetch(`https://www.googleapis.com/youtube/v3/playlists?id=${list_id}&key=${apiKey}&fields=items(snippet(title))&part=snippet`)
+                    .then(res => res.json())
+                    .then(out => {
+                        console.log(out);
+                        document.title = out['items'][0]['snippet']['title'];
+                    })
             } catch {}
-
         }
     }
     if (list_id == '') { // single
@@ -48,8 +51,11 @@ function youtube_main() {
             this_url = `https://www.youtube.com/embed/${video_id}?controls=0&autoplay=1&start=${t_}`;
         }
         try {
-            obj = await (await fetch(`https://www.googleapis.com/youtube/v3/videos?id=${video_id}&key=${apiKey}&fields=items(snippet(title))&part=snippet`)).json()
-            document.title = obj['items'][0]['snippet']['title'];
+            fetch(`https://www.googleapis.com/youtube/v3/videos?id=${video_id}&key=${apiKey}&fields=items(snippet(title))&part=snippet`)
+                .then(res => res.json()).then(out => {
+                    console.log(out);
+                    document.title = out['items'][0]['snippet']['title'];
+                })
         } catch {}
     }
     if ('mute' in parameters) {

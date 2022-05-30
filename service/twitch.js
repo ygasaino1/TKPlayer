@@ -50,20 +50,18 @@ function twitch_main() {
     if ('t' in parameters) { t_ += (parseInt(parameters['t']) || 0); }
     // if (hash['key'] == 't') { t_ += (parseInt(hash['value']) || 0); }
     this_url += `&time=${t_}`;
-
+    try {
+        let body_ = "";
+        fetch(href).then(res => res.text()).then(out => body = out).catch(e => console.log(e));
+        let body_dom_ = new DOMParser().parseFromString(a, "text/html");
+        document.title = body_dom_.title;
+    } catch {}
     twitch_call(this_url);
 }
 
 function twitch_call(url) {
     // use the html elements and ...
     console.log(url);
-    let title = "TKMedia";
-    try {
-        let body_ = await (await fetch('https://web.dev/cross-origin-resource-sharing/')).text()
-        let body_dom_ = new DOMParser().parseFromString(a, "text/html");
-        title = body_dom_.title;
-        document.title = title;
-    } catch {}
     iframe.setAttribute('src', url);
     console.log(iframe);
 }
