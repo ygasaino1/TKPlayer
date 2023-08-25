@@ -1,0 +1,19 @@
+p#back {
+    font-size: 120px;
+    color: white;
+    /* font-family: 'Francois One', sans-serif; */
+    /* font-family: 'Ubuntu', sans-serif; */
+    font-family: 'Russo One', sans-serif;
+    -webkit-text-stroke-width: 10px;
+    -webkit-text-stroke-color: black;
+}
+
+p#front {
+    font-size: 120px;
+    color: white;
+    /* font-family: 'Francois One', sans-serif; */
+    /* font-family: 'Ubuntu', sans-serif; */
+    font-family: 'Russo One', sans-serif;
+    -webkit-text-stroke-width: 0px;
+    -webkit-text-stroke-color: black;
+}
