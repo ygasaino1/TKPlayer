@@ -1,0 +1,14 @@
+{
+  "devDependencies": {
+    "uglify-js": "^3.17.4"
+  },
+  "name": "tkplayer",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "minify": "uglifyjs init.js script/utility.js service/bilibili.js service/mixcloud.js service/soundcloud.js service/twitch.js service/vimeo.js service/wistia.js service/youtube.js service/zeno.js script/comment.js script/direct.js script/radio.js script/video.js main.js -o script.min.js -c -m --toplevel"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
