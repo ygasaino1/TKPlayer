@@ -45,7 +45,10 @@ function youtube_main() {
     let list_id = '';
     let video_id = '';
 
-    if ('list' in packet.param || link_url.pathname.toLowerCase().includes('videoseries')) { // list
+    if ('list' in packet.param
+        || link_url.pathname.toLowerCase().includes('videoseries')
+        // https://youtube.com/playlist?list=PLvlw_ICcAI4dXql41zUwAY2FnsCIzT5b-&si=vvV7G_TuqFv4pRj-
+        || link_url.pathname.toLowerCase().includes('playlist')) { // list
         //---------------------------
         if (!href.includes('list=LL') && !href.toLowerCase().includes('start_radio=1')) {
             //---------------------------
