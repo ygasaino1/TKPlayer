@@ -5,6 +5,7 @@
 let player = null;
 
 let iframe = document.querySelector('#video-iframe');
+let iframe_temp = iframe.cloneNode();
 let v_container = document.querySelector('#vid-container');
 let t_container = document.querySelector('#twitch-container');
 

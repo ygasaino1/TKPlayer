@@ -2,5 +2,6 @@ package-lock.json
 node_modules
 script.min.js
 script.min.js.map
+script.merge.nolog.js
 script.merge.js
 temp

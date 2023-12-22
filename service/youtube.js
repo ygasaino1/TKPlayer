@@ -160,11 +160,13 @@ function onPlayerStateChange(event) {
         YT_states[1] == YT.PlayerState.BUFFERING &&
         YT_states[2] == YT.PlayerState.UNSTARTED
     ) { getTitle(); }
-    if (event.data == YT.PlayerState.ENDED && quedPacket.length > 0) { // if we have something in QUE
+    if (event.data == YT.PlayerState.ENDED && quedPacket.length > 0) { // que > loop
         sessionEnded();
-    } else if (event.data == YT.PlayerState.ENDED && 'loop' in youtube_parameters && !('list' in youtube_parameters)) {
+    } else if (event.data == YT.PlayerState.ENDED && 'loop' in youtube_parameters && !('list' in youtube_parameters)) { //loop > end
         player.playVideo();
         if (youtube_crop_start != -1) { player.seekTo(youtube_crop_start); }
+    } else if (event.data == YT.PlayerState.ENDED ) { //loop > end
+        sessionEnded();
     }
 
     function getTitle() {

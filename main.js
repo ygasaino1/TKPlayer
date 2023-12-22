@@ -245,6 +245,15 @@ function sessionEnded() {
         packet = quedPacket.shift();
         hashchange(true);
     }
+    else {
+        console.log("Exit")
+        // finished for real...
+        if (video != null) {
+            video.remove();
+            video = null;
+        }
+        iframe.parentElement.replaceChild(iframe_temp,iframe);
+    }
 }
 
 function cmd_cmd() {
