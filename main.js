@@ -203,7 +203,7 @@ function isValidURL(url) {
     }
 }
 
-async function isBlocked(blockUrlSource) {
+async function isBlocked(blockUrlSource, packet) {
     let check = false;
     if (!blockUrlSource) { return false; }
     if (!isValidURL(blockUrlSource)) { return false }
@@ -322,14 +322,15 @@ async function hashVerified() {
         delete packet_temp.overparam;
 
         console.log("> Hash Verified.");
-        console.log(packet);
-        let isBlockedResult = await isBlocked(packet.env.blockurl);
+
+        let isBlockedResult = await isBlocked(packet.env.blockurl, packet_temp);
         if (isBlockedResult) {
             history.pushState(null, null, ' ');
             return false;
         }
         else {
             packet = packet_temp;
+            console.log(packet);
             return true;
         }
 
