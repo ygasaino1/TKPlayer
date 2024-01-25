@@ -203,12 +203,12 @@ function isValidURL(url) {
     }
 }
 
-async function isBlocked(blockUrlSource, packet) {
+async function isBlocked(local_packet_temp) {
     let check = false;
-    if (!blockUrlSource) { return false; }
+    if (!local_packet_temp.env.blockurl) { return false; }
     if (!isValidURL(blockUrlSource)) { return false }
-    let currentUser = packet.id ?? "";
-    let currentUrl = packet.body ?? "";
+    let currentUser = local_packet_temp.id ?? "";
+    let currentUrl = local_packet_temp.body ?? "";
     if (currentUrl == null || undefined || "") {
         currentUrl = "";
     } else {
@@ -323,7 +323,7 @@ async function hashVerified() {
 
         console.log("> Hash Verified.");
 
-        let isBlockedResult = await isBlocked(packet.env.blockurl, packet_temp);
+        let isBlockedResult = await isBlocked(packet_temp);
         if (isBlockedResult) {
             history.pushState(null, null, ' ');
             return false;
