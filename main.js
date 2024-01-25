@@ -249,7 +249,7 @@ async function isBlocked(local_packet_temp) {
         lines.forEach(line => {
             const [type, value] = line.split(':');
             if (type.trim() === 'USER') {
-                block.user.push(value.trim().toLowerCase());
+                block.user.push(new RegExp(`^${value.trim().toLowerCase()}$`));
             } else if (type.trim() === 'URL') {
                 block.url.push(urlToRegex(value.trim()));
             }
@@ -265,12 +265,12 @@ async function isBlocked(local_packet_temp) {
     } catch (error) {
         console.error('Error fetching or parsing data:', error);
     }
-
+    if(check){console.log("you are blocked")} else {console.log("you are NOT blocked")}
     return check;
 }
 
-function hashchange(skipCheck) {
-    if ((skipCheck == false) && (hashVerified() == false)) {
+async function hashchange(skipCheck) {
+    if ((skipCheck == false) && (await hashVerified() == false)) {
         history.pushState(null, null, ' ');
         return;
     }
@@ -297,7 +297,8 @@ async function hashVerified() {
     let h = decodeURI(location.hash).substring(1);
     console.log(`#${h}`);
     try {
-        let obj = JSON.parse(h);
+        let obj = {};
+        try { obj = JSON.parse(h); } catch { }
         let packet_temp = {
             overparam: {},
             func: 'default',
