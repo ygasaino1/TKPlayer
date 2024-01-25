@@ -165,7 +165,6 @@ window.addEventListener("hashchange", () => {
 });
 
 let packet = {
-    overparam: {},
     func: 'default',
     body: '',
     param: {},
@@ -173,8 +172,107 @@ let packet = {
     extra: {}
 };
 
+function isBlocked2() {
+    let check = false;
+    let currentUser;
+    let currentUrl;
+    /* todo:
+    1. fetch a url for its string content
+    2. put the output inside an array spliting by lines
+    3. raw inputs in each line are formatted like this: [USER/URL]:[userValue/urlAddress]. example, USER:Tiki-8590 \n URL:www.google.com
+    4. url addresses may have wild cards like this example in the raw input. example, www.google.com/* so convert all of the urls into regex type.
+    5. make an object like this template
+    {
+        url:[],
+        user:[]
+    }
+    for each item in array, fill the inputs in their respectable place.
+    6. use regex and check if either current user or current url is inside the block object list by checking them in the list one by one. consider that
+    we may have wild cards inside the url address raw input.
+    then set check to true if you found any match in regex or false if not.
+    */
+    return check;
+}
+
+function isValidURL(url) {
+    try {
+        new URL(url);
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+
+async function isBlocked(blockUrlSource) {
+    let check = false;
+    if (!blockUrlSource) { return false; }
+    if (!isValidURL(blockUrlSource)) { return false }
+    let currentUser = packet.id ?? "";
+    let currentUrl = packet.body ?? "";
+    if (currentUrl == null || undefined || "") {
+        currentUrl = "";
+    } else {
+        if (!currentUrl.startsWith('http://') && !currentUrl.startsWith('https://')) {
+            currentUrl = 'https://' + currentUrl; // Prepend with http://
+        }
+        currentUrl = decodeURI(currentUrl);
+        currentUrl = new URL(currentUrl).href;
+    }
+
+    // Function to convert wildcard URL to regex
+    const urlToRegex = (url) => {
+        // Allow both case-insensitive and trailing slash variations
+        const regexString = url
+            .replace(/\./g, '\\.')
+            .replace(/\*/g, '.*')
+            .replace(/\/?$/, '/?')
+            .toLowerCase(); // Convert to lowercase for case insensitivity
+        return new RegExp(`^${regexString}$`);
+    };
+
+    try {
+        // Fetching URL for its string content (Assuming async operation)
+        const response = await fetch(blockUrlSource);
+        const content = await response.text();
+
+        // Split content by lines
+        const lines = content.split('\n');
+
+        // Initialize block object
+        const block = {
+            url: [],
+            user: []
+        };
+
+        // Parsing lines and filling block object
+        lines.forEach(line => {
+            const [type, value] = line.split(':');
+            if (type.trim() === 'USER') {
+                block.user.push(value.trim().toLowerCase());
+            } else if (type.trim() === 'URL') {
+                block.url.push(urlToRegex(value.trim()));
+            }
+        });
+        console.log(block);
+
+        // Check if current user or current url is blocked
+        check = block.user.some(userRegex => {
+            return userRegex.test(currentUser.toLowerCase());
+        }) || block.url.some(urlRegex => {
+            return urlRegex.test(currentUrl);
+        });
+    } catch (error) {
+        console.error('Error fetching or parsing data:', error);
+    }
+
+    return check;
+}
+
 function hashchange(skipCheck) {
-    if ((skipCheck == false) && (hashVerified() == false)) { return; }
+    if ((skipCheck == false) && (hashVerified() == false)) {
+        history.pushState(null, null, ' ');
+        return;
+    }
     if (packet.func == 'comment') { //comment
         cmd_comment(packet.body);
     } else if (packet.func == 'debug') {
@@ -193,32 +291,48 @@ function hashchange(skipCheck) {
     history.pushState(null, null, ' ');
 }
 
-function hashVerified() {
+async function hashVerified() {
     // #{ "overparam", "func", "body", "param", "id", "extra" }
     let h = decodeURI(location.hash).substring(1);
     console.log(`#${h}`);
     try {
         let obj = JSON.parse(h);
-        packet = {
+        let packet_temp = {
             overparam: {},
             func: 'default',
             body: '',
             param: {},
             id: '',
-            extra: {}
+            extra: {},
+            env: {}
         };
+        let superUser = ['blockurl'];
+        // this is filling up the packet object
         Object.keys(obj).forEach(key => {
-            if (key in packet && obj[key] != null) { packet[key] = obj[key]; }
+            if (!superUser.includes(key.toLowerCase()) && key in packet_temp && obj[key] != null) { packet_temp[key] = obj[key]; }
         });
         // override params with overparams that are added by authorities(world owners)
-        Object.keys(packet.overparam).forEach(key => {
-            packet.param[key] = packet.overparam[key];
+        Object.keys(packet_temp.overparam).forEach(key => {
+            if (superUser.includes(key.toLowerCase())) {
+                packet_temp.env[key] = packet_temp.overparam[key];
+            } else {
+                packet_temp.param[key] = packet_temp.overparam[key];
+            }
         });
-        delete packet.overparam;
+        delete packet_temp.overparam;
 
         console.log("> Hash Verified.");
         console.log(packet);
-        return true;
+        let isBlockedResult = await isBlocked(packet.env.blockurl);
+        if (isBlockedResult) {
+            history.pushState(null, null, ' ');
+            return false;
+        }
+        else {
+            packet = packet_temp;
+            return true;
+        }
+
         // }
     } catch (e) {
         return false;
@@ -252,7 +366,7 @@ function sessionEnded() {
             video.remove();
             video = null;
         }
-        iframe.parentElement.replaceChild(iframe_temp,iframe);
+        iframe.parentElement.replaceChild(iframe_temp, iframe);
     }
 }
 
