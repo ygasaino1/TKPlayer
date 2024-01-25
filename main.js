@@ -205,7 +205,8 @@ function isValidURL(url) {
 
 async function isBlocked(local_packet_temp) {
     let check = false;
-    if (!local_packet_temp.env.blockurl) { return false; }
+    let blockUrlSource = local_packet_temp.env.blockurl;
+    if (!blockUrlSource) { return false; }
     if (!isValidURL(blockUrlSource)) { return false }
     let currentUser = local_packet_temp.id ?? "";
     let currentUrl = local_packet_temp.body ?? "";
