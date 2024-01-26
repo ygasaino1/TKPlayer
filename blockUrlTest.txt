@@ -1,8 +1,4 @@
 -URL:*www.google.com*
 +URL:*youtube.com*
 +URL:*youtu.be*
-<<<<<<< HEAD
 -USER:Tiki-7865
-=======
--USER:Tiki-7865
->>>>>>> bc8736992e18e61673bb44fff7d1a89efef797c1
