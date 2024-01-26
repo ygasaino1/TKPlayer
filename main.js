@@ -206,16 +206,16 @@ function isValidURL(url) {
 async function isBlocked(local_packet_temp) {
 
 
-    let currentUser = local_packet_temp.id ?? "";
     let currentUrl = local_packet_temp.body ?? "";
+    let currentUser = local_packet_temp.id ?? "";
     if (currentUrl == null || undefined || "") {
         currentUrl = "";
     } else {
-        if (!currentUrl.startsWith('http://') && !currentUrl.startsWith('https://')) {
-            currentUrl = 'https://' + currentUrl; // Prepend with http://
-        }
+        // if (!currentUrl.startsWith('http://') && !currentUrl.startsWith('https://')) {
+        //     currentUrl = 'https://' + currentUrl; // Prepend with http://
+        // }
         currentUrl = decodeURI(currentUrl);
-        currentUrl = new URL(currentUrl).href;
+        // currentUrl = new URL(currentUrl).href;
     }
 
     // Function to convert wildcard URL to regex
@@ -230,77 +230,65 @@ async function isBlocked(local_packet_temp) {
     };
 
     let blocked_byBlack = false;
-    let blackUrlSource = local_packet_temp.env.blackurl;
-    if (blackUrlSource && isValidURL(blackUrlSource)) {
+    let blocked_byWhite = false;
+    let gateURL = local_packet_temp.env.gate;
+    if (gateURL && isValidURL(gateURL)) {
         try {
-            const response = await fetch(blackUrlSource);
+            const response = await fetch(gateURL);
             const content = await response.text();
             const lines = content.split('\n');
-            const block = {
+            const blackObj = {
                 url: [],
+                user: []
+            };
+            const whiteObj = {
+                url: [/^homepage$/],
                 user: []
             };
 
             lines.forEach(line => {
                 const [type, value] = line.split(':');
-                if (type.trim() === 'USER') {
-                    block.user.push(new RegExp(`^${value.trim().toLowerCase()}$`));
-                } else if (type.trim() === 'URL') {
-                    block.url.push(urlToRegex(value.trim()));
+                if (type.trim() === '-USER') {
+                    blackObj.user.push(new RegExp(`^${value.trim().toLowerCase()}$`));
+                } else if (type.trim() === '-URL') {
+                    blackObj.url.push(urlToRegex(value.trim()));
+                } else if (type.trim() === '+USER') {
+                    whiteObj.user.push(new RegExp(`^${value.trim().toLowerCase()}$`));
+                } else if (type.trim() === '+URL') {
+                    whiteObj.url.push(urlToRegex(value.trim()));
                 }
             });
-            console.log(block);
+            console.log('whiteObj:')
+            console.log(whiteObj);
+            console.log('blackObj:')
+            console.log(blackObj);
 
-            blocked_byBlack = block.user.some(userRegex => {
+            //black check
+            blocked_byBlack = blackObj.user.some(userRegex => {
                 return userRegex.test(currentUser.toLowerCase());
-            }) || block.url.some(urlRegex => {
+            }) || blackObj.url.some(urlRegex => {
                 return urlRegex.test(currentUrl);
             });
+
+            //white check
+            if (whiteObj.user.length > 0) {
+                blocked_byWhite = !whiteObj.user.some(userRegex => {
+                    return userRegex.test(currentUser.toLowerCase())
+                })
+            }
+            if (whiteObj.url.length > 0) {
+                blocked_byWhite = blocked_byWhite || !whiteObj.url.some(urlRegex => {
+                    return urlRegex.test(currentUrl);
+                })
+            }
+
+
         } catch (error) {
             console.error('Error fetching or parsing data:', error);
         }
     }
     if (blocked_byBlack) { console.log("blocked_byBlack") } else { console.log("NOT blocked_byBlack") }
-
-    let blocked_byWhite = false;
-    let whiteUrlSource = local_packet_temp.env.whiteurl;
-    if (whiteUrlSource && isValidURL(whiteUrlSource)) {
-        try {
-            const response = await fetch(whiteUrlSource);
-            const content = await response.text();
-            const lines = content.split('\n');
-            const white = {
-                url: [],
-                user: []
-            };
-            lines.forEach(line => {
-                const [type, value] = line.split(':');
-                if (type.trim() === 'USER') {
-                    white.user.push(new RegExp(`^${value.trim().toLowerCase()}$`));
-                } else if (type.trim() === 'URL') {
-                    white.url.push(urlToRegex(value.trim()));
-                }
-            });
-            console.log(white);
-            if (white.user.length > 0) {
-                blocked_byWhite = !white.user.some(userRegex => {
-                    return userRegex.test(currentUser.toLowerCase())
-                })
-            }
-            if (white.url.length > 0) {
-                blocked_byWhite = blocked_byWhite || !white.url.some(urlRegex => {
-                    return urlRegex.test(currentUrl);
-                })
-            }
-        } catch (error) {
-            console.error('Error fetching or parsing data:', error);
-        }
-    }
     if (blocked_byWhite) { console.log("blocked_byWhite") } else { console.log("NOT blocked_byWhite") }
-
-
-
-
 
     return blocked_byBlack || blocked_byWhite;
 }
@@ -344,7 +332,7 @@ async function hashVerified() {
             extra: {},
             env: {}
         };
-        let superUser = ['blackurl', 'whiteurl'];
+        let superUser = ['gate'];
         // this is filling up the packet object
         Object.keys(obj).forEach(key => {
             if (!superUser.includes(key.toLowerCase()) && key in packet_temp && obj[key] != null) { packet_temp[key] = obj[key]; }
