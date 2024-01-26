@@ -204,10 +204,8 @@ function isValidURL(url) {
 }
 
 async function isBlocked(local_packet_temp) {
-    let check = false;
-    let blockUrlSource = local_packet_temp.env.blockurl;
-    if (!blockUrlSource) { return false; }
-    if (!isValidURL(blockUrlSource)) { return false }
+
+
     let currentUser = local_packet_temp.id ?? "";
     let currentUrl = local_packet_temp.body ?? "";
     if (currentUrl == null || undefined || "") {
@@ -231,42 +229,80 @@ async function isBlocked(local_packet_temp) {
         return new RegExp(`^${regexString}$`);
     };
 
-    try {
-        // Fetching URL for its string content (Assuming async operation)
-        const response = await fetch(blockUrlSource);
-        const content = await response.text();
+    let blocked_byBlack = false;
+    let blackUrlSource = local_packet_temp.env.blackurl;
+    if (blackUrlSource && isValidURL(blackUrlSource)) {
+        try {
+            const response = await fetch(blackUrlSource);
+            const content = await response.text();
+            const lines = content.split('\n');
+            const block = {
+                url: [],
+                user: []
+            };
 
-        // Split content by lines
-        const lines = content.split('\n');
+            lines.forEach(line => {
+                const [type, value] = line.split(':');
+                if (type.trim() === 'USER') {
+                    block.user.push(new RegExp(`^${value.trim().toLowerCase()}$`));
+                } else if (type.trim() === 'URL') {
+                    block.url.push(urlToRegex(value.trim()));
+                }
+            });
+            console.log(block);
 
-        // Initialize block object
-        const block = {
-            url: [],
-            user: []
-        };
-
-        // Parsing lines and filling block object
-        lines.forEach(line => {
-            const [type, value] = line.split(':');
-            if (type.trim() === 'USER') {
-                block.user.push(new RegExp(`^${value.trim().toLowerCase()}$`));
-            } else if (type.trim() === 'URL') {
-                block.url.push(urlToRegex(value.trim()));
-            }
-        });
-        console.log(block);
-
-        // Check if current user or current url is blocked
-        check = block.user.some(userRegex => {
-            return userRegex.test(currentUser.toLowerCase());
-        }) || block.url.some(urlRegex => {
-            return urlRegex.test(currentUrl);
-        });
-    } catch (error) {
-        console.error('Error fetching or parsing data:', error);
+            blocked_byBlack = block.user.some(userRegex => {
+                return userRegex.test(currentUser.toLowerCase());
+            }) || block.url.some(urlRegex => {
+                return urlRegex.test(currentUrl);
+            });
+        } catch (error) {
+            console.error('Error fetching or parsing data:', error);
+        }
     }
-    if(check){console.log("you are blocked")} else {console.log("you are NOT blocked")}
-    return check;
+    if (blocked_byBlack) { console.log("blocked_byBlack") } else { console.log("NOT blocked_byBlack") }
+
+    let blocked_byWhite = false;
+    let whiteUrlSource = local_packet_temp.env.whiteurl;
+    if (whiteUrlSource && isValidURL(whiteUrlSource)) {
+        try {
+            const response = await fetch(whiteUrlSource);
+            const content = await response.text();
+            const lines = content.split('\n');
+            const white = {
+                url: [],
+                user: []
+            };
+            lines.forEach(line => {
+                const [type, value] = line.split(':');
+                if (type.trim() === 'USER') {
+                    white.user.push(new RegExp(`^${value.trim().toLowerCase()}$`));
+                } else if (type.trim() === 'URL') {
+                    white.url.push(urlToRegex(value.trim()));
+                }
+            });
+            console.log(white);
+            if (white.user.length > 0) {
+                blocked_byWhite = !white.user.some(userRegex => {
+                    return userRegex.test(currentUser.toLowerCase())
+                })
+            }
+            if (white.url.length > 0) {
+                blocked_byWhite = blocked_byWhite || !white.url.some(urlRegex => {
+                    return urlRegex.test(currentUrl);
+                })
+            }
+        } catch (error) {
+            console.error('Error fetching or parsing data:', error);
+        }
+    }
+    if (blocked_byWhite) { console.log("blocked_byWhite") } else { console.log("NOT blocked_byWhite") }
+
+
+
+
+
+    return blocked_byBlack || blocked_byWhite;
 }
 
 async function hashchange(skipCheck) {
@@ -308,7 +344,7 @@ async function hashVerified() {
             extra: {},
             env: {}
         };
-        let superUser = ['blockurl'];
+        let superUser = ['blackurl', 'whiteurl'];
         // this is filling up the packet object
         Object.keys(obj).forEach(key => {
             if (!superUser.includes(key.toLowerCase()) && key in packet_temp && obj[key] != null) { packet_temp[key] = obj[key]; }
@@ -316,7 +352,7 @@ async function hashVerified() {
         // override params with overparams that are added by authorities(world owners)
         Object.keys(packet_temp.overparam).forEach(key => {
             if (superUser.includes(key.toLowerCase())) {
-                packet_temp.env[key] = packet_temp.overparam[key];
+                packet_temp.env[key.toLowerCase()] = packet_temp.overparam[key];
             } else {
                 packet_temp.param[key] = packet_temp.overparam[key];
             }
@@ -324,6 +360,7 @@ async function hashVerified() {
         delete packet_temp.overparam;
 
         console.log("> Hash Verified.");
+
 
         let isBlockedResult = await isBlocked(packet_temp);
         if (isBlockedResult) {
