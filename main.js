@@ -247,15 +247,17 @@ async function isBlocked(local_packet_temp) {
             };
 
             lines.forEach(line => {
-                const [type, value] = line.split(':');
-                if (type.trim() === '-USER') {
-                    blackObj.user.push(new RegExp(`^${value.trim().toLowerCase()}$`));
-                } else if (type.trim() === '-URL') {
-                    blackObj.url.push(urlToRegex(value.trim()));
-                } else if (type.trim() === '+USER') {
-                    whiteObj.user.push(new RegExp(`^${value.trim().toLowerCase()}$`));
-                } else if (type.trim() === '+URL') {
-                    whiteObj.url.push(urlToRegex(value.trim()));
+                if (!line.startsWith('#')) {
+                    const [type, value] = line.split(':');
+                    if (type.trim() === '-USER') {
+                        blackObj.user.push(new RegExp(`^${value.trim().toLowerCase()}$`));
+                    } else if (type.trim() === '-URL') {
+                        blackObj.url.push(urlToRegex(value.trim()));
+                    } else if (type.trim() === '+USER') {
+                        whiteObj.user.push(new RegExp(`^${value.trim().toLowerCase()}$`));
+                    } else if (type.trim() === '+URL') {
+                        whiteObj.url.push(urlToRegex(value.trim()));
+                    }
                 }
             });
             console.log('whiteObj:')
