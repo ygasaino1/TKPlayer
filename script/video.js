@@ -11,6 +11,9 @@ function video_main() {
     video = htmlToElement(html);
     console.log(video);
     v_container.appendChild(video);
+    let video_parameters = null;
+    video_parameters = packet.param;
+    let static_time = 0;
 
     //---------------------------
     log = 'Video Loading...';
@@ -21,6 +24,7 @@ function video_main() {
     let types = {
         'm3u8': 'application/x-mpegURL',
         'mp4': 'video/mp4',
+        'm4v': 'video/mp4',
         'webm': 'video/webm',
         'ogv': 'video/ogg'
     }
@@ -48,7 +52,7 @@ function video_main() {
         src_type = types[extension];
 
         ////---------------------------
-        player.ready(function() {
+        player.ready(function () {
             //
             console.log(`VideoJs is Ready...`);
             console_(`___ [${src_type}]`);
@@ -65,14 +69,20 @@ function video_main() {
 
             let url = new URL(href);
             let t_ = parseInt(url.searchParams.get('t')) || parseInt(url.searchParams.get('time')) || 0;
+            static_time = t_;
             if ('t' in packet.param) { t_ += (parseInt(packet.param['t']) || 0); }
             this.currentTime(t_);
         });
     }
-    player.on('ended', function() {
-        videojs.log('Awww...over so soon?!');
-        video.remove();
-        video = null;
-        sessionEnded();
+    player.on('ended', function () {
+        if (quedPacket.length < 1 && 'loop' in video_parameters) { //no que and loop is requested
+            player.currentTime(static_time);
+            player.play();
+        } else {
+            videojs.log('Awww...over so soon?!');
+            video.remove();
+            video = null;
+            sessionEnded();
+        }
     });
 }

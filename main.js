@@ -18,7 +18,7 @@ let video_service = {
     'zeno': /zeno/i,
     'mixcloud': /\.mixcloud\./i,
 
-    'video': /\.mp4|\.m3u8|\.webm|\.ogv/i,
+    'video': /\.mp4|\.m4v|\.m3u8|\.webm|\.ogv/i,
 }
 
 let novideo_service = {
