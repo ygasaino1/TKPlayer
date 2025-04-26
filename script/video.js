@@ -68,7 +68,7 @@ function video_main() {
     ////---------------------------
     //// Load Video.js CSS
     if (window.videojs) {
-        initializeVideoJs(src_URL, src_MIME_TYPE);
+        initializeVideoJs(src_URL, MIME_TYPE[extension]);
         return;
     }
 
