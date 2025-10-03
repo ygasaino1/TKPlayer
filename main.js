@@ -1,4 +1,4 @@
-let homepage = "https://prrr-001.glitch.me/";
+let homepage = "https://tiki7.github.io/TKPage3/";
 let blankpage = window.location.href;
 let blackurl = '';
 //.....
@@ -388,6 +388,14 @@ function sessionEnded() {
     if (quedPacket.length > 0) {
         packet = quedPacket.shift();
         hashchange(true);
+    }
+    else if ('endmedia' in packet.param) {
+        let new_packet = {
+            func: 'default',
+            body: packet.param.endmedia,
+            param: { loop: null }
+        };
+        location.hash = JSON.stringify(new_packet);
     }
     else {
         console.log("Exit")
