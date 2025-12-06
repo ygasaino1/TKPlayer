@@ -36,7 +36,7 @@ function twitch_main() {
     }
 
     //---------------------------
-    this_url = `https://player.twitch.tv/?parent=${loc_url.hostname}&autoplay=true`; //parent=ygasaino1.github.io
+    this_url = `https://player.twitch.tv/?parent=${loc_url.hostname}&autoplay=true&muted=false`; //parent=ygasaino1.github.io
     if (channel_id != '') { this_url += `&channel=${channel_id}`; }
     if (video_id != '') { this_url += `&video=${video_id}`; }
     if (collection_id != '') { this_url += `&collection=${collection_id}`; }
@@ -64,27 +64,28 @@ function twitch_main() {
     //     document.title = body_dom_.title;
     // } catch {}
 
-    let options = {
-        autoplay: true,
-        width: '100%',
-        height: '100%',
-        //parent: ['ygasaino1.github.come']
-    };
-    if (channel_id != '') { options.channel = channel_id; } else if (video_id != '') { options.video = video_id; } else if (collection_id != '') { options.collection = collection_id; }
-    if (t_ != 0) { options.time = `${t_}`; }
-    player = new Twitch.Player("twitch-container", options);
-    player.addEventListener(Twitch.Player.VIDEO_PLAY, setTwitchQuality);
-    player.addEventListener(Twitch.Player.ENDED, twitchEnded);
-    // twitch_call(this_url);
+    // let options = {
+    //     autoplay: true,
+    //     muted:false,
+    //     width: '100%',
+    //     height: '100%',
+    //     parent: [`${loc_url.hostname}`]
+    // };
+    // if (channel_id != '') { options.channel = channel_id; } else if (video_id != '') { options.video = video_id; } else if (collection_id != '') { options.collection = collection_id; }
+    // if (t_ != 0) { options.time = `${t_}`; }
+    // player = new Twitch.Player("twitch-container", options);
+    // player.addEventListener(Twitch.Player.VIDEO_PLAY, setTwitchQuality);
+    // player.addEventListener(Twitch.Player.ENDED, twitchEnded);
+    twitch_call(this_url);
 
 }
 
-// function twitch_call(url) {
-//     // use the html elements and ...
-//     console.log(url);
-//     iframe.setAttribute('src', url);
-//     console.log(iframe);
-// }
+function twitch_call(url) {
+    // use the html elements and ...
+    console.log(url);
+    iframe.setAttribute('src', url);
+    console.log(iframe);
+}
 
 function setTwitchQuality() {
     console.log("twitch: Play");
